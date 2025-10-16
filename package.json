@@ -1,11 +1,9 @@
 {
-  "name": "first_app",
+  "name": "modern_memo_app",
   "private": true,
   "dependencies": {
-    "@rails/ujs": "^6.0.0-alpha",
-    "turbolinks": "^5.2.0",
-    "@rails/activestorage": "^6.0.0-alpha",
-    "@rails/actioncable": "^6.0.0-alpha"
+    "@hotwired/stimulus": "^3.2.0",
+    "@hotwired/turbo": "^7.2.0"
   },
-  "version": "0.1.0"
+  "version": "1.0.0"
 }
