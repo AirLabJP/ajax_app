@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   root to: 'posts#index'
-  post 'posts', to: 'posts#create'
-  get 'posts/:id', to: 'posts#checked'
+  
+  resources :posts, only: [:index, :show, :create, :update, :destroy] do
+    member do
+      patch :toggle_checked
+    end
+  end
 end
 
