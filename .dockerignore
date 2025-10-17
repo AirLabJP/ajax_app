@@ -1,0 +1,44 @@
+# Git関連
+.git
+.gitignore
+
+# Docker関連
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# ログファイル
+log/*
+*.log
+
+# 一時ファイル
+tmp/*
+!tmp/.keep
+
+# 依存関係
+node_modules
+vendor/bundle
+
+# データベース
+db/*.sqlite3
+db/*.sqlite3-journal
+
+# 環境変数
+.env
+.env.local
+.env.*.local
+
+# IDE設定
+.vscode
+.idea
+
+# OS関連
+.DS_Store
+Thumbs.db
+
+# テスト関連
+coverage
+.nyc_output
+
+# その他
+README.md
