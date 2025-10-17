@@ -13,20 +13,22 @@ default: &default
   adapter: mysql2
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: root
-  password:
+  username: <%= ENV.fetch("DATABASE_USERNAME") { "root" } %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD") { "" } %>
+  host: <%= ENV.fetch("DATABASE_HOST") { "localhost" } %>
+  port: <%= ENV.fetch("DATABASE_PORT") { 3306 } %>
   socket: /tmp/mysql.sock
 
 development:
   <<: *default
-  database: ajax_app_development
+  database: <%= ENV.fetch("DATABASE_NAME") { "ajax_app_development" } %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: ajax_app_test
+  database: <%= ENV.fetch("DATABASE_NAME") { "ajax_app_test" } %>
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -49,6 +51,6 @@ test:
 #
 production:
   <<: *default
-  database: ajax_app_production
-  username: ajax_app
-  password: <%= ENV['FIRST_APP_DATABASE_PASSWORD'] %>
+  database: <%= ENV.fetch("DATABASE_NAME") { "ajax_app_production" } %>
+  username: <%= ENV.fetch("DATABASE_USERNAME") { "ajax_app" } %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD") { ENV['FIRST_APP_DATABASE_PASSWORD'] } %>

@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # MySQLデータベース
+  db:
+    image: mysql:8.0
+    container_name: rails_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: ajax_app_development
+      MYSQL_USER: ajax_app
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - rails_network
+
+  # Redis（オプション - Action Cable用）
+  redis:
+    image: redis:7-alpine
+    container_name: rails_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - rails_network
+
+  # Railsアプリケーション
+  web:
+    build: .
+    container_name: rails_app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - RAILS_ENV=development
+      - DATABASE_HOST=db
+      - DATABASE_USERNAME=ajax_app
+      - DATABASE_PASSWORD=password
+      - DATABASE_NAME=ajax_app_development
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/tmp
+      - /app/log
+    depends_on:
+      - db
+      - redis
+    networks:
+      - rails_network
+    command: >
+      sh -c "
+        bundle install &&
+        npm install &&
+        rails db:create &&
+        rails db:migrate &&
+        rails db:seed &&
+        rails server -b 0.0.0.0
+      "
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  rails_network:
+    driver: bridge
